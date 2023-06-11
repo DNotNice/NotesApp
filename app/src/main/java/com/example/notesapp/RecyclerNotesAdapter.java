@@ -29,7 +29,7 @@ public class RecyclerNotesAdapter extends RecyclerView.Adapter<RecyclerNotesAdap
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.txtTile.setText(arrNotes.get(position).getTitle());
-        holder.txtTile.setText(arrNotes.get(position).getContent());
+        holder.txtContent.setText(arrNotes.get(position).getContent());
     }
 
     @Override

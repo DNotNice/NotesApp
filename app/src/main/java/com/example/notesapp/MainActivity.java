@@ -40,17 +40,17 @@ public class MainActivity extends AppCompatActivity {
                     dialog.setContentView(R.layout.add_note_layout);
                 EditText edtTitle , edtContent;
                 Button btnAdd ;
-                edtTitle = findViewById(R.id.edTitle);
-                edtContent = findViewById(R.id.edContent);
-                btnAdd = findViewById(R.id.btnAdd);
+                edtTitle = dialog.findViewById(R.id.edTitle);
+                edtContent = dialog.findViewById(R.id.edContent);
+                btnAdd = dialog.findViewById(R.id.btnAdd);
                 btnAdd.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String title = edtTitle.getText().toString();
-                        String content = edtContent.getText().toString();
+                        String titleM = edtTitle.getText().toString();
+                        String contentM = edtContent.getText().toString();
 
-                        if(!content.equals("")){
-                            databaseHelper.noteDao().addNote(new Note(title, content));
+                        if(!contentM.equals("")){
+                            databaseHelper.noteDao().addNote(new Note(titleM, contentM));
                             showNotes();
                             dialog.dismiss();
 
@@ -62,8 +62,11 @@ public class MainActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
-        btnCreate.setOnClickListener(v->{
-            fabAdd.performClick();
+        btnCreate.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                fabAdd.performClick();
+            }
         });
     }
 
