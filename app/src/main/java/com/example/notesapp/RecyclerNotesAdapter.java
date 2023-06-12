@@ -1,16 +1,21 @@
 package com.example.notesapp;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -38,7 +43,49 @@ public class RecyclerNotesAdapter extends RecyclerView.Adapter<RecyclerNotesAdap
         holder.llRow.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-            deleteItem(holder.getAdapterPosition());
+                Dialog dialog = new Dialog(context);
+                dialog.setContentView(R.layout.long_press_options);
+                TextView edit= dialog.findViewById(R.id.NoteEdit);
+                TextView Delete = dialog.findViewById(R.id.NoteDelete);
+                dialog.show();
+                edit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Dialog updateDialog = new Dialog(context);
+                        updateDialog.setContentView(R.layout.update_note_layout);
+                        EditText updateTitle , updateContent ;
+                        Button updateButton;
+                        updateTitle  = updateDialog.findViewById(R.id.updateTitle);
+                        updateContent = updateDialog.findViewById(R.id.updateContent);
+                        updateButton = updateDialog.findViewById(R.id.updateAdd);
+                        Note note = arrNotes.get(holder.getAdapterPosition());
+                        updateTitle.setText(note.getTitle());
+                        updateContent.setText(note.getContent());
+                        updateButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                databaseHelper.noteDao().update(new Note(arrNotes.get(holder.getAdapterPosition()).getId(),
+                                         updateTitle.getText().toString(),
+                                        updateContent.getText().toString()));
+                                updateDialog.dismiss();
+                                ((MainActivity)context).showNotes();
+
+                            }
+                        });
+                        dialog.dismiss();
+                        updateDialog.show();
+
+                    }
+                });
+                Delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                        deleteItem(holder.getAdapterPosition());
+                    }
+                });
+
+
                 return true;
             }
         });
