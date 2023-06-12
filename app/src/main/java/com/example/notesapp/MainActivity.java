@@ -70,12 +70,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void showNotes() {
+    public void showNotes() {
         ArrayList<Note> arrNote = (ArrayList<Note>) databaseHelper.noteDao().getNotes();
         if(arrNote.size() > 0){
             recyclerView.setVisibility(View.VISIBLE);
             llNoNotes.setVisibility(View.GONE);
-            recyclerView.setAdapter(new RecyclerNotesAdapter(this ,arrNote));
+            recyclerView.setAdapter(new RecyclerNotesAdapter(this ,arrNote , databaseHelper));
 
         }else{
             llNoNotes.setVisibility(View.VISIBLE);
